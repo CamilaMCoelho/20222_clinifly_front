@@ -7,16 +7,31 @@ import { InputContainer, StyledInput } from './styles'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string
+  textAlignCenter?: boolean
+  labelTextAlignCenter?: boolean
 }
 
 const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
-  { id, name, label, ...props },
+  {
+    id,
+    name,
+    label,
+    textAlignCenter = false,
+    labelTextAlignCenter = false,
+    ...props
+  },
   ref,
 ) => {
   return (
-    <InputContainer>
+    <InputContainer labelTextAlignCenter={labelTextAlignCenter}>
       {!!label && <label htmlFor={name}>{label}</label>}
-      <StyledInput id={name} ref={ref} name={name} {...props} />
+      <StyledInput
+        id={name}
+        ref={ref}
+        name={name}
+        textAlignCenter={textAlignCenter}
+        {...props}
+      />
     </InputContainer>
   )
 }
