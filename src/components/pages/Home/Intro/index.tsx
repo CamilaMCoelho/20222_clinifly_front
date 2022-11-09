@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { Coffee, Package, ShoppingCart, Timer } from 'phosphor-react'
+import { CalendarCheck, FirstAid } from 'phosphor-react'
 import { useTheme } from 'styled-components'
 
 import introBannerLoginImg from '../../../../assets/login-banner-clinifly.png'
@@ -31,16 +31,16 @@ export function Intro() {
           </section>
           <BenefitsContainer>
             <InfoWithIcon
-              icon={<ShoppingCart size={16} weight="fill" />}
-              text="Agendamento dinâmico"
+              icon={<CalendarCheck size={16} weight="fill" />}
+              text="Agendamento online"
               backgroundIcon={colors['brand-yellow-dark']}
             />
             <InfoWithIcon
-              icon={<Timer size={16} weight="fill" />}
+              icon={<FirstAid size={16} weight="fill" />}
               text="Médicos conveniados"
               backgroundIcon={colors['brand-yellow']}
             />
-            <InfoWithIcon
+            {/* <InfoWithIcon
               icon={<Package size={16} weight="fill" />}
               text="Entrega rápida e rastreada"
               backgroundIcon={colors['base-text']}
@@ -49,7 +49,7 @@ export function Intro() {
               icon={<Coffee size={16} weight="fill" />}
               text="O café chega fresquinho até você"
               backgroundIcon={colors['brand-purple']}
-            />
+            /> */}
           </BenefitsContainer>
         </div>
 
