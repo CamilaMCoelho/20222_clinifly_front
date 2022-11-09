@@ -8,7 +8,7 @@ import { TitleText } from '../../../../components/Typography'
 export const IntroContainer = styled.section`
   width: 100%;
   height: 34rem;
-  background: ${({ theme }) => `url(${introBackgroundImg}) no-repeat center,
+  background: ${({ theme }) => `url(${introBackgroundImg.src}) no-repeat center,
       linear-gradient(
         0deg,
         ${theme.colors['base-white']} 0%,

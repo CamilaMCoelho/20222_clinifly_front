@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { MapPin, ShoppingCart } from 'phosphor-react'
 
-import coffeeDeliveryLogo from '../../assets/coffee-delivery-logo.svg'
+// import coffeeDeliveryLogo from '../../assets/coffee-delivery-logo.svg'
 
 import { HeaderContainer, HeaderButtonsContainer, HeaderButton } from './styles'
 
@@ -9,7 +9,7 @@ export function Header() {
   return (
     <HeaderContainer>
       <div className="alignCenterContainer">
-        <img src={coffeeDeliveryLogo} alt="" />
+        <h1>Clinifly</h1>
 
         <HeaderButtonsContainer>
           <HeaderButton variant="purple">

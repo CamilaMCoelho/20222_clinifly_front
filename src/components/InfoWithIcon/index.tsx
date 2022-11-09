@@ -14,7 +14,7 @@ export function InfoWithIcon({
 }: InfoWithIconProps) {
   return (
     <InfoWithIconContainer>
-      <IconContainer css={{ $$backgroundIcon: backgroundIcon }} >{icon}</IconContainer>
+      <IconContainer backgroundIcon={backgroundIcon}>{icon}</IconContainer>
       {typeof text === 'string' ? <p>{text}</p> : text}
     </InfoWithIconContainer>
   )

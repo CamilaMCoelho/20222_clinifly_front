@@ -1,7 +1,8 @@
+import Image from 'next/image'
 import { Coffee, Package, ShoppingCart, Timer } from 'phosphor-react'
 import { useTheme } from 'styled-components'
 
-import introCoffeeImg from '../../../../assets/intro-coffee.png'
+import introBannerLoginImg from '../../../../assets/login-banner-clinifly.png'
 
 import { InfoWithIcon } from '../../../../components/InfoWithIcon'
 import { RegularText } from '../../../../components/Typography'
@@ -22,22 +23,21 @@ export function Intro() {
         <div>
           <section>
             <IntroTitle size="xl">
-              Encontre o café perfeito para qualquer hora do dia
+              Encontre sua consulta perfeita para qualquer hora do dia
             </IntroTitle>
             <RegularText size="l" color="subtitle" as="h3">
-              Com o Coffee Delivery você recebe seu café onde estiver, a
-              qualquer hora
+              Com o Clinifly você tem saúde onde estiver, a qualquer hora
             </RegularText>
           </section>
           <BenefitsContainer>
             <InfoWithIcon
               icon={<ShoppingCart size={16} weight="fill" />}
-              text="Compra simples e segura"
+              text="Agendamento dinâmico"
               backgroundIcon={colors['brand-yellow-dark']}
             />
             <InfoWithIcon
               icon={<Timer size={16} weight="fill" />}
-              text="Embalagem mantém o café intacto"
+              text="Médicos conveniados"
               backgroundIcon={colors['brand-yellow']}
             />
             <InfoWithIcon
@@ -53,7 +53,15 @@ export function Intro() {
           </BenefitsContainer>
         </div>
 
-        <img src={introCoffeeImg} alt="" />
+        <Image
+          src={introBannerLoginImg}
+          alt=""
+          sizes="100vw"
+          width={480}
+          height={360}
+          quality={100}
+          priority
+        />
       </IntroContent>
     </IntroContainer>
   )

@@ -1,11 +1,11 @@
-import {styled} from '../../../styles/theme'
+import styled from 'styled-components'
 
-export const LayoutContainer = styled('div', {
-  '.alignCenterContainer': {
-    width: '100%',
-    maxWidth: '70rem',
+export const LayoutContainer = styled.div`
+  .alignCenterContainer {
+    width: 100%;
+    max-width: 80rem;
 
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    margin-left: auto;
+    margin-right: auto;
   }
-})
+`

@@ -1,5 +1,5 @@
-import {styled} from '../theme'
+import styled from 'styled-components'
 
-export const HomeContainer = styled('div', {
-  marginBottom: '9.8rem'
-})
+export const HomeContainer = styled.main`
+  margin-bottom: 9.8rem;
+`

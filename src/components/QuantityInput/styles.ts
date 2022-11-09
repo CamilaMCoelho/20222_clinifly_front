@@ -1,43 +1,44 @@
-import { styled } from "../../styles/theme";
+import styled from 'styled-components'
 
-export const QuantityInputContainer = styled('div', {
-  flex: 1,
-  minHeight: '2.375rem',
+export const QuantityInputContainer = styled.div`
+  flex: 1;
+  min-height: 2.375rem;
 
-  background: '$base-button',
+  background: ${({ theme }) => theme.colors['base-button']};
 
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '0.25rem',
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
 
-  borderRadius: '6px',
-  padding: '0.5rem',
+  border-radius: 6px;
+  padding: 0.5rem;
 
-  '& > input': {
-    width: '100%',
-    textAlign: 'center',
-    background: 'none',
-    border: 0,
-    color: '$base-title',
+  > input {
+    width: 100%;
+    text-align: center;
+    background: none;
+    border: 0;
+    color: ${({ theme }) => theme.colors['base-title']};
   }
-})
+`
 
+export const IconWrapper = styled.button.attrs({
+  type: 'button',
+})`
+  width: 0.875rem;
+  height: 0.875rem;
+  border: 0;
+  background: none;
+  color: ${({ theme }) => theme.colors['brand-purple']};
 
-export const IconWrapper = styled('button', {
-  width: '0.875rem',
-  height: '0.875rem',
-  border: 0,
-  background: 'none',
-  color: '$brand-purple',
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
+  transition: 0.4s;
 
-  transition: '0.4s',
-
-  '&:hover': {
-    color: '$brand-purple-dark',
+  &:hover {
+    color: ${({ theme }) => theme.colors['brand-purple-dark']};
   }
-})
+`

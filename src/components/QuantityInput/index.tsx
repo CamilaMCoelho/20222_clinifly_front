@@ -5,11 +5,11 @@ import { IconWrapper, QuantityInputContainer } from './styles'
 export function QuantityInput() {
   return (
     <QuantityInputContainer>
-      <IconWrapper type='button'>
+      <IconWrapper>
         <Minus size={14} weight="bold" />
       </IconWrapper>
       <input type="number" readOnly value={1} />
-      <IconWrapper type='button'>
+      <IconWrapper>
         <Plus size={14} weight="bold" />
       </IconWrapper>
     </QuantityInputContainer>
