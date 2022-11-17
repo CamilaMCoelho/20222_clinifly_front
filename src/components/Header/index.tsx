@@ -1,26 +1,38 @@
-// import coffeeDeliveryLogo from '../../assets/coffee-delivery-logo.svg'
+import { useRouter } from 'next/router'
+import Image from 'next/image'
+import { SignOut } from 'phosphor-react'
+import { destroyCookie } from 'nookies'
 
-import { HeaderContainer } from './styles'
+import cliniflyLogo from '../../assets/cliniflyLogo.svg'
+
+import { HeaderContainer, LogOutButton } from './styles'
+import { useContext } from 'react'
+import { AuthContext } from '../../contexts/AuthContext'
 
 export function Header() {
+  const router = useRouter()
+
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)
+
+  function logOut() {
+    destroyCookie(undefined, 'cliniflyToken', {
+      path: '/',
+    })
+
+    setIsAuthenticated(false)
+
+    router.push('/')
+  }
+
   return (
     <HeaderContainer>
       <div className="alignCenterContainer">
-        <h1>Clinifly</h1>
-
-        {/* <HeaderButtonsContainer>
-          <HeaderButton variant="purple">
-            <MapPin size={22} weight="fill" />
-            Porto Alegre, RS
-          </HeaderButton>
-
-          <Link href="/checkout">
-            <HeaderButton variant="yellow">
-              <ShoppingCart size={22} weight="fill" />
-              <span>3</span>
-            </HeaderButton>
-          </Link>
-        </HeaderButtonsContainer> */}
+        <Image src={cliniflyLogo} alt="" width={200} sizes="100vw" priority />
+        {isAuthenticated && (
+          <LogOutButton onClick={logOut}>
+            <SignOut size={32} />
+          </LogOutButton>
+        )}
       </div>
     </HeaderContainer>
   )

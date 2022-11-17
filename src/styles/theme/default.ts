@@ -18,6 +18,14 @@ export const defaultTheme = {
     'brand-yellow': '#DBAC2C',
     'brand-yellow-light': '#F1E9C9',
     'brand-yellow-dark': '#C47F17',
+
+    'button-blue-500': '#0ea5e9',
+    'button-blue-600': '#0284c7',
+
+    'error-red': 'rgb(229, 62, 62)',
+
+    white: '#FFFFFF',
+    'white-300': '#F2ECEC;',
   },
 
   fontSizes: {

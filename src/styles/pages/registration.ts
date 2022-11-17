@@ -46,26 +46,3 @@ export const BoxForm = styled.div`
     gap: 1rem;
   }
 `
-
-export const RegisterButton = styled.button`
-  width: 100%;
-
-  padding: 0.625rem 0.875rem;
-  font-size: 0.875rem;
-  color: white;
-  font-weight: 700;
-  text-align: center;
-
-  border: 2px solid transparent;
-  border-radius: 4px;
-
-  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
-
-  margin-top: 1rem;
-
-  background: #0ea5e9;
-
-  &:hover {
-    background: #0284c7;
-  }
-`

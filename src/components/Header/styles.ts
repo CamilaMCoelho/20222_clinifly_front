@@ -8,7 +8,7 @@ export const HeaderContainer = styled.header`
   align-items: center;
   justify-content: center;
 
-  padding: 2rem;
+  padding: 1.25rem 0;
 
   position: sticky;
   top: 0;
@@ -19,6 +19,15 @@ export const HeaderContainer = styled.header`
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+`
+
+export const LogOutButton = styled.button`
+  border: 0;
+  background: none;
+
+  &:hover {
+    opacity: 0.7;
   }
 `
 

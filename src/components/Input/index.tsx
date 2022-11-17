@@ -3,10 +3,13 @@ import {
   ForwardRefRenderFunction,
   InputHTMLAttributes,
 } from 'react'
-import { InputContainer, StyledInput } from './styles'
+import { FieldError } from 'react-hook-form'
+
+import { ErrorMessage, InputContainer, StyledInput } from './styles'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string
+  error?: FieldError
   textAlignCenter?: boolean
   labelTextAlignCenter?: boolean
 }
@@ -16,6 +19,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
     id,
     name,
     label,
+    error,
     textAlignCenter = false,
     labelTextAlignCenter = false,
     ...props
@@ -30,8 +34,14 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
         ref={ref}
         name={name}
         textAlignCenter={textAlignCenter}
+        isInvalid={!!error}
         {...props}
       />
+      {!!error && (
+        <ErrorMessage textAlignCenter={textAlignCenter}>
+          {error.message}
+        </ErrorMessage>
+      )}
     </InputContainer>
   )
 }

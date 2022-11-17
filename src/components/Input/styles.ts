@@ -15,6 +15,11 @@ export const InputContainer = styled.div<InputContainerProps>`
     font-size: 1rem;
     font-weight: 700;
 
+    &::after {
+      content: '*';
+      color: ${({ theme }) => theme.colors['error-red']};
+    }
+
     ${({ labelTextAlignCenter }) =>
       labelTextAlignCenter &&
       css`
@@ -24,6 +29,7 @@ export const InputContainer = styled.div<InputContainerProps>`
 `
 
 interface StyledInputProps {
+  isInvalid: boolean
   textAlignCenter: boolean
 }
 
@@ -31,6 +37,8 @@ export const StyledInput = styled.input<StyledInputProps>`
   width: 100%;
   padding: 0.75rem 0.875rem;
   font-size: 0.875rem;
+
+  background: ${({ theme }) => theme.colors['white-300']};
 
   ${({ textAlignCenter }) =>
     textAlignCenter &&
@@ -40,4 +48,25 @@ export const StyledInput = styled.input<StyledInputProps>`
 
   border-radius: 4px;
   border: 0;
+
+  ${({ isInvalid, theme }) =>
+    isInvalid &&
+    css`
+      border: 1px solid ${theme.colors['error-red']};
+    `}
+`
+
+interface ErrorMessageProps {
+  textAlignCenter: boolean
+}
+
+export const ErrorMessage = styled.span<ErrorMessageProps>`
+  color: red;
+  font-size: 0.75rem;
+
+  ${({ textAlignCenter }) =>
+    textAlignCenter &&
+    css`
+      text-align: center;
+    `}
 `

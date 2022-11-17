@@ -40,16 +40,6 @@ export function Intro() {
               text="Médicos conveniados"
               backgroundIcon={colors['brand-yellow']}
             />
-            {/* <InfoWithIcon
-              icon={<Package size={16} weight="fill" />}
-              text="Entrega rápida e rastreada"
-              backgroundIcon={colors['base-text']}
-            />
-            <InfoWithIcon
-              icon={<Coffee size={16} weight="fill" />}
-              text="O café chega fresquinho até você"
-              backgroundIcon={colors['brand-purple']}
-            /> */}
           </BenefitsContainer>
         </div>
 
