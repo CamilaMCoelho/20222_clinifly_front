@@ -47,12 +47,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       },
     }
   } else {
-    const { sub } = jwt.verify(
-      cookies.cliniflyToken,
-      '829f0400c0b07711411bb78ff65bba1b',
-    )
-
     try {
+      const { sub } = jwt.verify(
+        cookies.cliniflyToken,
+        '829f0400c0b07711411bb78ff65bba1b',
+      )
+
       const response = await api.post(`eventos?id=${sub}`, {
         type: 'appointmentGet',
       })

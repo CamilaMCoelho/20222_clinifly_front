@@ -1,5 +1,11 @@
+import { useRouter } from 'next/router'
+import type { GetServerSideProps } from 'next'
 import type { ReactElement } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import jwt from 'jsonwebtoken'
+import { parseCookies } from 'nookies'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 import { Input } from '../components/Input'
 import { Button } from '../components/Button'
@@ -12,10 +18,6 @@ import {
   CreateAppointmentContainer,
   CreateAppointmentForm,
 } from '../styles/pages/createAppointment'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { parseCookies } from 'nookies'
-import { useRouter } from 'next/router'
 
 const doctorType = z.object({
   value: z.string(),
@@ -33,7 +35,13 @@ export type CreateAppoinmentFormData = z.infer<
   typeof createAppointmentValidationSchema
 >
 
-export default function CreateAppointment() {
+interface CreateAppointmentProps {
+  sub: string
+}
+
+export default function CreateAppointment({
+  sub: patientId,
+}: CreateAppointmentProps) {
   const {
     register,
     handleSubmit,
@@ -60,14 +68,6 @@ export default function CreateAppointment() {
 
   async function onSubmit(data: CreateAppoinmentFormData) {
     const formattedPrice = data.appointmentPrice.replace('R$', '')
-
-    console.log({
-      patientId: data.patientId,
-      address: data.address,
-      doctorId: data.doctorId.value,
-      appointmentPrice: `${formattedPrice} reais`.trim(),
-      token: cookies.cliniflyToken,
-    })
 
     try {
       const response = await api.post('eventos', {
@@ -96,8 +96,6 @@ export default function CreateAppointment() {
         { type: 'doctorList' },
       )
 
-      console.log(response)
-
       const options: Option[] = response.data.map(
         ({ id: value, name: label }) => ({
           value,
@@ -120,7 +118,9 @@ export default function CreateAppointment() {
           <Input
             {...register('patientId')}
             name="patientId"
-            label="Nome do Paciente"
+            label="Id do Paciente"
+            value={patientId}
+            readOnly
             error={errors.patientId}
           />
           <Controller
@@ -162,4 +162,33 @@ export default function CreateAppointment() {
 
 CreateAppointment.getLayout = function getLayout(page: ReactElement) {
   return <DefaultLayout>{page}</DefaultLayout>
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const cookies = parseCookies(ctx)
+
+  if (!cookies.cliniflyToken) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  } else {
+    try {
+      const { sub } = jwt.verify(
+        cookies.cliniflyToken,
+        '829f0400c0b07711411bb78ff65bba1b',
+      )
+
+      return {
+        props: { sub } || {},
+      }
+    } catch (error) {
+      console.log(error)
+      return {
+        props: {},
+      }
+    }
+  }
 }
