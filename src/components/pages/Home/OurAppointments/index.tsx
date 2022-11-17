@@ -1,9 +1,12 @@
 import Link from 'next/link'
+import { Button } from '../../../Button'
 import { TitleText } from '../../../Typography'
-// import { CoffeeCard } from '../CoffeeCard'
-import { AppointmentList, OurAppointmentsContainer } from './styles'
-
-// import { coffees } from '../../../../data/coffees'
+import {
+  AppointmentList,
+  CreateNewAppointment,
+  OurAppointmentsContainer,
+  TitleWithButtonContainer,
+} from './styles'
 
 interface AppointmentProps {
   id: string
@@ -21,20 +24,27 @@ interface OurAppointmentsProps {
 export function OurAppointments({ appointments }: OurAppointmentsProps) {
   return (
     <OurAppointmentsContainer className="alignCenterContainer">
-      <TitleText size="l" color="subtitle">
-        Suas consultas
-      </TitleText>
+      <TitleWithButtonContainer>
+        <TitleText size="l" color="subtitle">
+          Suas consultas
+        </TitleText>
+        {appointments && (
+          <Link href="/criar-consulta">
+            <Button>Nova Consulta</Button>
+          </Link>
+        )}
+      </TitleWithButtonContainer>
       <AppointmentList>
         {appointments ? (
           <table>
             <thead>
               <tr>
-                <td>Id</td>
-                <td>Nome</td>
-                <td>Nome do Médico</td>
-                <td>Endereço</td>
-                <td>Preço da consulta</td>
-                <td>Consulta criada</td>
+                <th>Id da Consulta</th>
+                <th>Id do Paciente</th>
+                <th>Id do Médico</th>
+                <th>Endereço</th>
+                <th>Preço da Consulta</th>
+                <th>Consulta Criada</th>
               </tr>
             </thead>
             <tbody>
@@ -44,8 +54,12 @@ export function OurAppointments({ appointments }: OurAppointmentsProps) {
                   <td>{appointment.patientId}</td>
                   <td>{appointment.doctorId}</td>
                   <td>{appointment.address}</td>
-                  <td>{appointment.appointmentPrice}</td>
-                  <td>{appointment.createdAt}</td>
+                  <td>{`R$ ${appointment.appointmentPrice
+                    .replace('reais', '')
+                    .trim()}`}</td>
+                  <td>
+                    {new Date(appointment.createdAt).toLocaleString('pt-BR')}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -53,7 +67,10 @@ export function OurAppointments({ appointments }: OurAppointmentsProps) {
         ) : (
           <p>
             Sem consultas agendadas em seu nome no momento. Para criar uma
-            consulta <Link href="/criar-consulta">Clique aqui</Link>
+            consulta{' '}
+            <Link href="/criar-consulta">
+              <CreateNewAppointment>Clique aqui</CreateNewAppointment>
+            </Link>
           </p>
         )}
       </AppointmentList>
