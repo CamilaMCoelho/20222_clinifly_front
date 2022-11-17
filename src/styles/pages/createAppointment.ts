@@ -27,4 +27,10 @@ export const CreateAppointmentForm = styled.form`
   align-items: center;
   justify-content: center;
   gap: 1rem;
+
+  > div input:read-only {
+    cursor: default;
+
+    color: ${({ theme }) => theme.colors['base-text']};
+  }
 `
