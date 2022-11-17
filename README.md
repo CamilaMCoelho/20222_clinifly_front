@@ -16,7 +16,7 @@
 - [ ] [React Hook Form](https://react-hook-form.com/)
 - [ ] [React Number Format](https://github.com/s-yadav/react-number-format)
 - [ ] [React Select](https://react-select.com/home)
-- [ ] Zod
+- [ ] [Zod](https://zod.dev/)
 - [ ] [Phosphor Icons](https://phosphoricons.com/)
 
 ## 💻 Projeto
