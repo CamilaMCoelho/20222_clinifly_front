@@ -22,7 +22,7 @@ import {
 const doctorType = z.object({
   value: z.string(),
   label: z.string(),
-  crm: z.string(),
+  crm: z.number(),
   occupationArea: z.string(),
 })
 
@@ -53,6 +53,8 @@ export default function CreateAppointment({
   } = useForm<CreateAppoinmentFormData>({
     resolver: zodResolver(createAppointmentValidationSchema),
   })
+
+  console.log(watch('doctorId'))
 
   const crm = watch('doctorId.crm')
   const occupationArea = watch('doctorId.occupationArea')

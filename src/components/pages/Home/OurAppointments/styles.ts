@@ -32,6 +32,12 @@ export const AppointmentList = styled.div`
       font-size: ${({ theme }) => theme.fontSizes['text-regular-m']};
       text-align: center;
 
+      padding-inline: 1rem;
+
+      &:last-child {
+        padding-right: 0;
+      }
+
       &:last-child {
         vertical-align: middle;
 
