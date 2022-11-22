@@ -12,6 +12,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: FieldError
   textAlignCenter?: boolean
   labelTextAlignCenter?: boolean
+  isRequired?: boolean
 }
 
 const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
@@ -22,12 +23,16 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
     error,
     textAlignCenter = false,
     labelTextAlignCenter = false,
+    isRequired = true,
     ...props
   },
   ref,
 ) => {
   return (
-    <InputContainer labelTextAlignCenter={labelTextAlignCenter}>
+    <InputContainer
+      labelTextAlignCenter={labelTextAlignCenter}
+      isRequired={isRequired}
+    >
       {!!label && <label htmlFor={name}>{label}</label>}
       <StyledInput
         id={name}

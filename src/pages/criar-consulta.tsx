@@ -22,6 +22,8 @@ import {
 const doctorType = z.object({
   value: z.string(),
   label: z.string(),
+  crm: z.string(),
+  occupationArea: z.string(),
 })
 
 const createAppointmentValidationSchema = z.object({
@@ -46,10 +48,14 @@ export default function CreateAppointment({
     register,
     handleSubmit,
     control,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<CreateAppoinmentFormData>({
     resolver: zodResolver(createAppointmentValidationSchema),
   })
+
+  const crm = watch('doctorId.crm')
+  const occupationArea = watch('doctorId.occupationArea')
 
   const cookies = parseCookies()
   const router = useRouter()
@@ -81,6 +87,8 @@ export default function CreateAppointment({
         },
       })
 
+      console.log(response)
+
       router.push('/home')
 
       console.log(response)
@@ -91,15 +99,20 @@ export default function CreateAppointment({
 
   async function getDoctors(inputValue: string) {
     try {
-      const response: { data: { id: string; name: string }[] } = await api.post(
-        '/eventos',
-        { type: 'doctorList' },
-      )
+      const response: {
+        data: {
+          id: string
+          name: string
+          crm: string
+          occupationArea: string
+        }[]
+      } = await api.post('/eventos', { type: 'doctorList' })
 
       const options: Option[] = response.data.map(
-        ({ id: value, name: label }) => ({
+        ({ id: value, name: label, ...rest }) => ({
           value,
           label,
+          ...rest,
         }),
       )
 
@@ -136,12 +149,23 @@ export default function CreateAppointment({
               />
             )}
           />
+          {watch('doctorId') !== undefined && (
+            <>
+              <Input label="CRM" value={crm} readOnly isRequired={false} />
+              <Input
+                label="Área de Atuação"
+                value={occupationArea}
+                readOnly
+                isRequired={false}
+              />
+            </>
+          )}
 
           <Input
             {...register('address')}
             name="address"
             label="Endereço"
-            placeholder="Rua ABC, 56"
+            placeholder="Ex:. Rua ABC, 56"
             error={errors.address}
           />
           <Input
@@ -150,6 +174,7 @@ export default function CreateAppointment({
             value={`R$ ${getRandomInt(50, 120)}`}
             readOnly
             error={errors.appointmentPrice}
+            isRequired={false}
           />
           <Button isLoading={isSubmitting} disabled={isSubmitting}>
             Agendar

@@ -50,15 +50,16 @@ export default function Registration() {
     age,
     ...data
   }: RegisterFormData) {
-    console.log(data)
     try {
-      await api.post('eventos', {
+      const response = await api.post('eventos', {
         type: 'patientCreated',
         data: {
           ...data,
           age: Number(age),
         },
       })
+
+      console.log(response)
       router.push('/')
     } catch (error) {
       console.log(error)

@@ -32,5 +32,6 @@ export const CreateAppointmentForm = styled.form`
     cursor: default;
 
     color: ${({ theme }) => theme.colors['base-text']};
+    background: ${({ theme }) => theme.colors['base-button']};
   }
 `

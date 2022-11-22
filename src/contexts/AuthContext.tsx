@@ -47,6 +47,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         data: { email, password },
       })
 
+      console.log(response)
+
       const { accessToken } = response.data
 
       setCookie(undefined, 'cliniflyToken', accessToken, {

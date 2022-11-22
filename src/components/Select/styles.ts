@@ -68,7 +68,6 @@ const ReactSelectBase = css<StyledSelectProps>`
   }
 
   .Select__option--is-selected {
-    /* color: ${({ theme }) => theme.colors.white}; */
     color: ${({ theme }) => theme.colors['brand-purple']};
     background: ${({ theme }) => theme.colors['brand-purple-light']};
   }

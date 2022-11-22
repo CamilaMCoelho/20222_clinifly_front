@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components'
 
 interface InputContainerProps {
   labelTextAlignCenter: boolean
+  isRequired: boolean
 }
 
 export const InputContainer = styled.div<InputContainerProps>`
@@ -15,10 +16,14 @@ export const InputContainer = styled.div<InputContainerProps>`
     font-size: 1rem;
     font-weight: 700;
 
-    &::after {
-      content: '*';
-      color: ${({ theme }) => theme.colors['error-red']};
-    }
+    ${({ isRequired }) =>
+      isRequired &&
+      css`
+        &::after {
+          content: '*';
+          color: ${({ theme }) => theme.colors['error-red']};
+        }
+      `}
 
     ${({ labelTextAlignCenter }) =>
       labelTextAlignCenter &&
