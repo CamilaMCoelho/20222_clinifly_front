@@ -68,3 +68,7 @@ yarn dev
 ◼️ Camila Monteiro Coelho - RA: 82119736
 
 ◼️ Italo da Silva Alves - RA: 82118114
+
+## 🎥 Video CliniFly :
+
+https://youtu.be/PsLxwy0XPGA
