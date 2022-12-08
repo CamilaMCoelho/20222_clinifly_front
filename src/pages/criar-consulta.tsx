@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import type { GetServerSideProps } from 'next'
-import type { ReactElement } from 'react'
+import { ReactElement, useContext, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import jwt from 'jsonwebtoken'
 import { parseCookies } from 'nookies'
@@ -12,9 +12,12 @@ import { Button } from '../components/Button'
 import { DynamicSelect, Option } from '../components/Select'
 import DefaultLayout from '../components/Layouts/DefaultLayout'
 
+import { AuthContext } from '../contexts/AuthContext'
+
 import { api } from '../services/api'
 
 import {
+  AvailableTimesContainer,
   CreateAppointmentContainer,
   CreateAppointmentForm,
 } from '../styles/pages/createAppointment'
@@ -22,51 +25,46 @@ import {
 const doctorType = z.object({
   value: z.string(),
   label: z.string(),
-  crm: z.number(),
-  occupationArea: z.string(),
 })
 
 const createAppointmentValidationSchema = z.object({
-  patientId: z.string().min(1, 'Informe seu id'),
-  doctorId: z.object(doctorType.shape),
-  address: z.string().min(1, 'Informe seu endereço'),
-  appointmentPrice: z.string(),
+  id: z.object(doctorType.shape),
 })
 
-export type CreateAppoinmentFormData = z.infer<
-  typeof createAppointmentValidationSchema
->
-
-interface CreateAppointmentProps {
-  sub: string
+interface CreateAppoinmentFormData {
+  id: string
+  clinicId: string
+  name: string
+  crm: number
+  modality: string
+  daysAvailable: string[]
+  timeAvailable: string[]
+  priceMedicalConsultation: string
+  clinic: {
+    id: string
+    name: string
+    address: string
+  }
 }
 
-export default function CreateAppointment({
-  sub: patientId,
-}: CreateAppointmentProps) {
+export default function CreateAppointment() {
   const {
-    register,
     handleSubmit,
     control,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<CreateAppoinmentFormData>({
     resolver: zodResolver(createAppointmentValidationSchema),
   })
-
-  console.log(watch('doctorId'))
-
-  const crm = watch('doctorId.crm')
-  const occupationArea = watch('doctorId.occupationArea')
+  const { user } = useContext(AuthContext)
+  const [doctor, setDoctor] = useState<CreateAppoinmentFormData | null>(null)
+  const [selectedTime, setSelectedTime] = useState<{
+    activeId: number
+    day: string
+    time: string
+  }>({} as { activeId: number; day: string; time: string })
 
   const cookies = parseCookies()
   const router = useRouter()
-
-  function getRandomInt(min: number, max: number) {
-    min = Math.ceil(min)
-    max = Math.floor(max)
-    return Math.floor(Math.random() * (max - min) + min)
-  }
 
   const filterDoctors = (inputValue: string, options: Option[]) => {
     return options.filter((i) =>
@@ -75,25 +73,26 @@ export default function CreateAppointment({
   }
 
   async function onSubmit(data: CreateAppoinmentFormData) {
-    const formattedPrice = data.appointmentPrice.replace('R$', '')
+    const { sub } = jwt.verify(
+      cookies.cliniflyToken,
+      '829f0400c0b07711411bb78ff65bba1b',
+    )
 
     try {
       const response = await api.post('eventos', {
         type: 'appointmentCreated',
         data: {
-          patientId: data.patientId,
-          address: data.address,
-          doctorId: data.doctorId.value,
-          appointmentPrice: `${formattedPrice} reais`.trim(),
+          patientId: sub,
+          doctorId: (data as unknown as { id: { value: string } }).id.value,
+          clinicId: doctor?.clinicId,
+          consultationDay: selectedTime.day,
+          consultationTime: selectedTime.time,
           token: cookies.cliniflyToken,
         },
       })
 
       console.log(response)
-
       router.push('/home')
-
-      console.log(response)
     } catch (error) {
       console.log(error)
     }
@@ -102,12 +101,7 @@ export default function CreateAppointment({
   async function getDoctors(inputValue: string) {
     try {
       const response: {
-        data: {
-          id: string
-          name: string
-          crm: string
-          occupationArea: string
-        }[]
+        data: CreateAppoinmentFormData[]
       } = await api.post('/eventos', { type: 'doctorList' })
 
       const options: Option[] = response.data.map(
@@ -130,54 +124,80 @@ export default function CreateAppointment({
       <h1>Criar Consulta</h1>
       <div>
         <CreateAppointmentForm onSubmit={handleSubmit(onSubmit)}>
-          <Input
-            {...register('patientId')}
-            name="patientId"
-            label="Id do Paciente"
-            value={patientId}
-            readOnly
-            error={errors.patientId}
-          />
+          <Input label="Nome do Paciente" value={user?.name} readOnly />
           <Controller
-            name="doctorId"
+            name="id"
             control={control}
-            render={({ field }) => (
+            render={({ field: { onChange, ...field } }) => (
               <DynamicSelect
                 label="Médico"
                 placeholder="Selecione um médico"
                 loadOptions={(inputValue) => getDoctors(inputValue)}
-                error={errors.doctorId}
+                onChange={(e) => {
+                  setDoctor(e as CreateAppoinmentFormData)
+                  onChange(e)
+                }}
+                error={errors.id}
                 {...field}
               />
             )}
           />
-          {watch('doctorId') !== undefined && (
+          {doctor && (
             <>
-              <Input label="CRM" value={crm} readOnly isRequired={false} />
               <Input
-                label="Área de Atuação"
-                value={occupationArea}
+                label="CRM"
+                value={doctor.crm}
                 readOnly
                 isRequired={false}
               />
+              <Input
+                label="Área de Atuação"
+                value={doctor.modality}
+                readOnly
+                isRequired={false}
+              />
+              <Input
+                label="Clínica"
+                value={doctor.clinic.name}
+                readOnly
+                isRequired={false}
+              />
+              <Input
+                label="Endereço da Clínica"
+                value={doctor.clinic.address}
+                readOnly
+                isRequired={false}
+              />
+              <Input
+                label="Preço da Consulta"
+                value={doctor.priceMedicalConsultation}
+                readOnly
+                isRequired={false}
+              />
+              <span>Horários Disponíveis</span>
+              <AvailableTimesContainer>
+                {doctor.daysAvailable.map((days, i) => {
+                  return (
+                    <button
+                      key={i}
+                      type="button"
+                      className={selectedTime.activeId === i ? 'active' : ''}
+                      onClick={() =>
+                        setSelectedTime({
+                          activeId: i,
+                          day: days,
+                          time: doctor.timeAvailable[i],
+                        })
+                      }
+                    >
+                      <span>{`${days} ${doctor.timeAvailable[i]}`}</span>
+                    </button>
+                  )
+                })}
+              </AvailableTimesContainer>
             </>
           )}
 
-          <Input
-            {...register('address')}
-            name="address"
-            label="Endereço"
-            placeholder="Ex:. Rua ABC, 56"
-            error={errors.address}
-          />
-          <Input
-            {...register('appointmentPrice')}
-            label="Preço da Consulta"
-            value={`R$ ${getRandomInt(50, 120)}`}
-            readOnly
-            error={errors.appointmentPrice}
-            isRequired={false}
-          />
           <Button isLoading={isSubmitting} disabled={isSubmitting}>
             Agendar
           </Button>

@@ -10,13 +10,36 @@ import DefaultLayout from '../../components/Layouts/DefaultLayout'
 import { HomeContainer } from '../../styles/pages/home'
 import { api } from '../../services/api'
 
-interface AppointmentProps {
+interface Patient {
+  name: string
+}
+
+interface Doctor {
+  id: string
+  clinicId: string
+  name: string
+  crm: number
+  modality: string
+  daysAvailable: string[]
+  timeAvailable: string[]
+  priceMedicalConsultation: string
+}
+interface Clinic {
+  name: string
+  address: string
+}
+
+export interface AppointmentProps {
   id: string
   patientId: string
   doctorId: string
-  address: string
-  appointmentPrice: string
+  clinicId: string
+  consultationDay: string
+  consultationHour: string
   createdAt: string
+  patient: Patient
+  doctor: Doctor
+  clinic: Clinic
 }
 
 interface HomeProps {

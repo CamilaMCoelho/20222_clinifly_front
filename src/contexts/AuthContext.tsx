@@ -9,6 +9,7 @@ interface SignInCredentials {
 }
 
 interface User {
+  name?: string
   accessToken: string
 }
 
@@ -36,7 +37,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!cookies.cliniflyToken) {
       setUser(null)
     } else {
-      setUser({ accessToken: cookies.cliniflyToken })
+      setUser({ name: undefined, accessToken: cookies.cliniflyToken })
     }
   }, [])
 
@@ -49,14 +50,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       console.log(response)
 
-      const { accessToken } = response.data
+      const { name, accessToken } = response.data
 
       setCookie(undefined, 'cliniflyToken', accessToken, {
         maxAge: 60 * 60 * 24 * 30,
         path: '/',
       })
 
-      setUser({ accessToken })
+      setUser({ name, accessToken })
 
       Router.push('/home')
     } catch (error) {

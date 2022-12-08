@@ -35,3 +35,36 @@ export const CreateAppointmentForm = styled.form`
     background: ${({ theme }) => theme.colors['base-button']};
   }
 `
+
+export const AvailableTimesContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+
+  > button {
+    all: unset;
+    width: 100%;
+    border: 1px solid ${({ theme }) => theme.colors['button-blue-500']};
+    border-radius: 4px;
+    text-align: center;
+    color: ${({ theme }) => theme.colors['button-blue-500']};
+    cursor: pointer;
+    padding-block: 0.25rem;
+
+    font-size: ${({ theme }) => theme.fontSizes['text-bold-m']};
+    font-weight: 700;
+
+    transition: all cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+
+    &.active {
+      background: ${({ theme }) => theme.colors['button-blue-600']};
+      border-color: ${({ theme }) => theme.colors['button-blue-600']};
+      color: ${({ theme }) => theme.colors.white};
+    }
+
+    &:hover {
+      background: ${({ theme }) => theme.colors['button-blue-600']};
+      border-color: ${({ theme }) => theme.colors['button-blue-600']};
+      color: ${({ theme }) => theme.colors.white};
+    }
+  }
+`

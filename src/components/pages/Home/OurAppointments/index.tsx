@@ -1,21 +1,15 @@
 import Link from 'next/link'
+
 import { Button } from '../../../Button'
 import { TitleText } from '../../../Typography'
+import type { AppointmentProps } from '../../../../pages/home'
+
 import {
   AppointmentList,
   CreateNewAppointment,
   OurAppointmentsContainer,
   TitleWithButtonContainer,
 } from './styles'
-
-interface AppointmentProps {
-  id: string
-  patientId: string
-  doctorId: string
-  address: string
-  appointmentPrice: string
-  createdAt: string
-}
 
 interface OurAppointmentsProps {
   appointments: AppointmentProps[]
@@ -40,23 +34,27 @@ export function OurAppointments({ appointments }: OurAppointmentsProps) {
             <thead>
               <tr>
                 <th>Id da Consulta</th>
-                <th>Id do Paciente</th>
-                <th>Id do Médico</th>
-                <th>Endereço</th>
+                <th>Nome do Paciente</th>
+                <th>Nome do Médico</th>
+                <th>Dia</th>
+                <th>Horário</th>
+                <th>Clínica</th>
+                <th>Endereço da Clínica</th>
                 <th>Preço da Consulta</th>
                 <th>Consulta Criada</th>
               </tr>
             </thead>
             <tbody>
-              {appointments.map((appointment) => (
+              {appointments.map((appointment, i) => (
                 <tr key={appointment.id}>
-                  <td>{appointment.id}</td>
-                  <td>{appointment.patientId}</td>
-                  <td>{appointment.doctorId}</td>
-                  <td>{appointment.address}</td>
-                  <td>{`R$ ${appointment.appointmentPrice
-                    .replace('reais', '')
-                    .trim()}`}</td>
+                  <td>{i + 1}</td>
+                  <td>{appointment.patient.name}</td>
+                  <td>{appointment.doctor.name}</td>
+                  <td>{appointment.consultationDay}</td>
+                  <td>{appointment.consultationHour}</td>
+                  <td>{appointment.clinic.name}</td>
+                  <td>{appointment.clinic.address}</td>
+                  <td>{appointment.doctor.priceMedicalConsultation}</td>
                   <td>
                     {new Date(appointment.createdAt).toLocaleString('pt-BR')}
                   </td>
