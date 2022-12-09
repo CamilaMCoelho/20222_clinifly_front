@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import type { GetServerSideProps } from 'next'
-import { ReactElement, useContext, useState } from 'react'
+import { ReactElement, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import jwt from 'jsonwebtoken'
 import { parseCookies } from 'nookies'
@@ -11,8 +11,6 @@ import { Input } from '../components/Input'
 import { Button } from '../components/Button'
 import { DynamicSelect, Option } from '../components/Select'
 import DefaultLayout from '../components/Layouts/DefaultLayout'
-
-import { AuthContext } from '../contexts/AuthContext'
 
 import { api } from '../services/api'
 
@@ -55,7 +53,7 @@ export default function CreateAppointment() {
   } = useForm<CreateAppoinmentFormData>({
     resolver: zodResolver(createAppointmentValidationSchema),
   })
-  const { user } = useContext(AuthContext)
+  const { patientName } = parseCookies()
   const [doctor, setDoctor] = useState<CreateAppoinmentFormData | null>(null)
   const [selectedTime, setSelectedTime] = useState<{
     activeId: number
@@ -86,7 +84,7 @@ export default function CreateAppointment() {
           doctorId: (data as unknown as { id: { value: string } }).id.value,
           clinicId: doctor?.clinicId,
           consultationDay: selectedTime.day,
-          consultationTime: selectedTime.time,
+          consultationHour: selectedTime.time,
           token: cookies.cliniflyToken,
         },
       })
@@ -124,7 +122,7 @@ export default function CreateAppointment() {
       <h1>Criar Consulta</h1>
       <div>
         <CreateAppointmentForm onSubmit={handleSubmit(onSubmit)}>
-          <Input label="Nome do Paciente" value={user?.name} readOnly />
+          <Input label="Nome do Paciente" value={patientName} readOnly />
           <Controller
             name="id"
             control={control}

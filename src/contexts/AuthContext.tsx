@@ -25,6 +25,9 @@ export function signOut() {
   destroyCookie(undefined, 'cliniflyToken', {
     path: '/',
   })
+  destroyCookie(undefined, 'patientName', {
+    path: '/',
+  })
   Router.push('/')
 }
 
@@ -53,6 +56,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { name, accessToken } = response.data
 
       setCookie(undefined, 'cliniflyToken', accessToken, {
+        maxAge: 60 * 60 * 24 * 30,
+        path: '/',
+      })
+
+      setCookie(undefined, 'patientName', name, {
         maxAge: 60 * 60 * 24 * 30,
         path: '/',
       })
